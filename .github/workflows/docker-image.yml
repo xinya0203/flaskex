@@ -18,7 +18,7 @@ jobs:
     # - SonarCloud 
     
     - name: Build the Docker image
-      run: docker build  -t ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:v1 
+      run: docker build  -t ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:v1 .
 
     - name: Check for Images
       run: docker images 
