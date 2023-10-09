@@ -14,6 +14,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    # - SonarCloud 
     
     - name: Build the Docker image
-      run: docker version
+      run: docker build  -t ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:v1 
+
+    - name: Check for Images
+      run: docker images 
