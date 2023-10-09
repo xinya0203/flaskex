@@ -22,3 +22,14 @@ jobs:
 
     - name: Check for Images
       run: docker images 
+
+    - name: Run Trivy Image Scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:v1
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+      
