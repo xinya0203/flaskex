@@ -19,7 +19,10 @@ jobs:
     - name: Expose git commit data
       uses: rlespinasse/git-commit-data-action@v1
 
-    # - SonarCloud 
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     
     - name: Build the Docker image
       run: "docker build  -t ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:${{ env.GIT_COMMIT_SHORT_SHA }} . "
