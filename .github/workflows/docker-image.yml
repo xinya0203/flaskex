@@ -14,12 +14,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Expose git commit data
+      uses: rlespinasse/git-commit-data-action@v1
+
     - uses: actions/checkout@v3
 
     # - SonarCloud 
     
     - name: Build the Docker image
-      run: docker build  -t ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:v1 .
+      run: docker build  -t ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:${{ env.GIT_COMMIT_SHORT_SHA }} .
 
     - name: Check for Images
       run: docker images 
@@ -27,7 +30,7 @@ jobs:
     - name: Run Trivy Image Scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:v1
+        image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:${{ env.GIT_COMMIT_SHORT_SHA }}
         format: 'table'
         exit-code: '0'
         ignore-unfixed: true
@@ -37,5 +40,5 @@ jobs:
       run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Docker Push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:v1
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:${{ env.GIT_COMMIT_SHORT_SHA }}
       
