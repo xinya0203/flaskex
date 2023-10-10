@@ -22,7 +22,7 @@ jobs:
     # - SonarCloud 
     
     - name: Build the Docker image
-      run: docker build  -t ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:${{ env.GIT_COMMIT_SHORT_SHA }} .
+      run: "docker build  -t ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:${{ env.GIT_COMMIT_SHORT_SHA }} . "
 
     - name: Check for Images
       run: docker images 
@@ -30,15 +30,15 @@ jobs:
     - name: Run Trivy Image Scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:${{ env.GIT_COMMIT_SHORT_SHA }}
+        image-ref: "${{ secrets.DOCKERHUB_USERNAME }}/flaskex:${{ env.GIT_COMMIT_SHORT_SHA }}"
         format: 'table'
         exit-code: '0'
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
     - name: Docker Login
-      run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+      run: "docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}"
 
     - name: Docker Push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:${{ env.GIT_COMMIT_SHORT_SHA }}
+      run: "docker push ${{ secrets.DOCKERHUB_USERNAME }}/flaskex:${{ env.GIT_COMMIT_SHORT_SHA }}"
       
